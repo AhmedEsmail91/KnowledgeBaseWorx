@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('name', 255);
-            $table->string('job_nature',255);
+            $table->json('job_nature');
+            $table->string('thumbnail');
             $table->string('hotline');
             $table->foreignId('aheeva_id')->nullable()->constrained('aheevas')->cascadeOnDelete();
             $table->foreignId('kaspersky_id')->nullable()->constrained('kasperskies')->cascadeOnDelete();

@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'job_nature', 'branch_id', 'services', 'kaspersky_id', 'aheeva_id'];
+    protected $fillable = ['name', 'job_nature','thumbnail','hotline', 'branch_id', 'services', 'kaspersky_id', 'aheeva_id'];
+    protected $casts = [
+        'services' => 'array',
+        'job_nature' => 'array',
+    ];
+    
     public function branch()
     {
         return $this->belongsTo(Branch::class);

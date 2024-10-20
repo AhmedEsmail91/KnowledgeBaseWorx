@@ -44,13 +44,8 @@ class DataCenterResource extends Resource
                     ->required(),
                 Select::make('items')
                     ->label('Items')
-                    
-                    ->options(
-                        Item::query()
-                            ->orderBy('created_at', 'desc')
-                            ->pluck('item_desc_name', 'id')
-                            ->all()
-                    )->preload()
+                    ->relationship('items', 'item_desc_name')
+                    ->preload()
                     ->multiple()
                     ->required(),
             ]);
