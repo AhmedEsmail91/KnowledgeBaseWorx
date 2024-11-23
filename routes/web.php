@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Documentation;
 use App\Models\Section;
 use Illuminate\Support\Facades\Route;
 
@@ -15,9 +16,19 @@ use Illuminate\Support\Facades\Route;
 */
 $host = env('APP_URL');
 Route::get('/', function () use ($host) {
-    return redirect()->away("{$host}:8000/knowledge-base-worx/login");
-});
+    return redirect()->away("{$host}/knowledge-base-worx/login");
+})->name('main');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/Documentation/{id}', function ($id) {
+        $doc = Documentation::findOrFail($id);
+        if ($doc && $doc->pdf) {
+            return response()->download(storage_path('app/public/' . $doc->pdf), $doc->title);
+        } else {
+            return abort(404);
+        }
+    })->name('downloadDoc');
+});
 Route::get('/section_download/{id}', function ($id) {
     // return response()->download(storage_path('app/public/section_download.txt'));
     return 'Download section_id: '.Section::find($id)->title;

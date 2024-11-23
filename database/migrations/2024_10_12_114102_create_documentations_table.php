@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('documentations', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('title', 255);
-            $table->text('description');
+            $table->json('description');
             $table->string('pdf', 255);
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('section_id')->constrained(table: 'sections')->cascadeOnDelete();
+            $table->foreignId('special')->nullable()->constrained('accounts')->cascadeOnDelete();
             $table->timestamps();
         });
     }

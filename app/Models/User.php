@@ -19,10 +19,13 @@ class User extends Authenticatable implements FilamentUser
     use HasApiTokens, HasFactory, Notifiable;
     public function position()
     {
-        return $this->belongsTo(Position::class);
+        return $this->belongsTo(related: Position::class);
     }
     public function canAccessPanel(\Filament\Panel $panel): bool{
-        return $this->position->job_title === "Admin";
+        return true;
+    }
+    public function section(){
+        return $this->hasOneThrough(Section::class, Position::class, 'id', 'id', localKey: 'position_id', secondLocalKey: 'section_id');
     }
 
     /**

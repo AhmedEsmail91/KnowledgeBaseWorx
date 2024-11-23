@@ -36,7 +36,8 @@ class SectionResource extends Resource
                     ->label('Section Description')
                     ->required()
                     ->placeholder('Write your content here')
-                    ->hint('The content must be at most 500 characters.')
+                    ->hint('Must be at most 500 characters, and dot(.) delimited')
+                    // ->description('Must be Delimited by dot (.)')
                     ->maxLength(500), // Set maximum words or characters
             ]);
     }

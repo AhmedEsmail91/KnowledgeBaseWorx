@@ -39,6 +39,14 @@ class SystemAssetsSeeder extends Seeder
         }
         \App\Models\Branch::factory(5)->create();
         \App\Models\Service::factory(10)->create();
+        \App\Models\CN::create([
+            'CN-number' => '12345678',
+            'start_range'=>'21239200',
+            'end_range'=>'21239219',
+            'Hunt_Group'=>'HG1',
+            'created_at'=>now(),
+            'updated_at'=>now()
+        ]);
         // \App\Models\Item::factory(10)->create();
         
     }

@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\Aheeva;
 use App\Models\Branch;
 use App\Models\Kaspersky;
+use App\Models\cn_lines;
 use App\Models\Service;
 use Faker\Provider\ar_EG\Text;
 use Filament\Forms;
@@ -27,26 +28,28 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 class AccountResource extends Resource
 {
     protected static ?string $model = Account::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-home-modern';
-    
+
     public static function form(Form $form): Form
     {
         return $form
-            
+
             ->schema([
-                
+
                 Section::make('Account Information')
                     ->schema( [
                         Group::make()
                             ->schema([
                                 TextInput::make('name')
                                     ->label('Name')
-                                    ->required(),
+                                    //->required()
+                                    ,
                                 TagsInput::make('job_nature')
                                     ->label('Job Nature')
                                     ->placeholder('Job Nature')
@@ -57,51 +60,58 @@ class AccountResource extends Resource
 
                                     ])
                                     ->color('info')
-                                    ->required(),
-                            ])
-                            ,
+                                    //->required()
+                                    ,
+                            ]),
+
                         TextInput::make('hotline')
                             ->label('Hotline')
                             ->tel()
-                            ->required(),
+                            //->required()
+                            ,
+
                         FileUpload::make('thumbnail')
                             ->disk('public')->directory('accounts/thumbnails')
                             ->label('Logo')
-                            ->required(),
+
+                            //->required()
+                            ,
                     ])
-                    ->collapsible()
+                    // ->collapsible()
                     ->columnSpan(2),
 
                 Section::make('Provides')
                 ->schema([
                     Select::make('aheeva_id')
                         ->label('Aheeva')
-                        
+
                         ->relationship('aheeva','ip')
                         ,
                     Select::make('kaspersky_id')
                         ->label('Kaspersky')
-                        
+
                         ->relationship(
                             name: 'kaspersky',
                             modifyQueryUsing: fn (Builder $query) => $query->orderBy('ip'),)
                         ->getOptionLabelFromRecordUsing(function(Kaspersky $record){
                             return "Connect on -> {$record->Ip}";
                         })
-                        ->required(),
+                        //->required()
+                        ,
                     Select::make('branch_id')
                         ->label('Branch')
-                        
+
                         ->relationship(
                             name: 'branch',
                             modifyQueryUsing: fn (Builder $query) => $query->orderBy('name'),)
                         ->getOptionLabelFromRecordUsing(function(Branch $record){
                             return Str::limit("{$record->name} Location:: {$record->location}",50,'...');
                         })
-                        ->required(),
+                        //->required()
+                        ,
                     Select::make('services')
                         ->label('Services')
-                        
+
                         ->relationship(
                             'services',
                             titleAttribute: 'name',
@@ -112,11 +122,9 @@ class AccountResource extends Resource
                         })
                         ->preload()
                         ->multiple()
-                        ->required(),
-                    
-                        ])->columnSpan(2)
-                    
-                    ,
+                        //->required()
+                        ,
+                        ])->columnSpan(2)->collapsible(),
             ])->columns(4);
     }
 
@@ -143,11 +151,13 @@ class AccountResource extends Resource
                     ->label('Job Nature')
                     ->limit(5)
                     ->color('info')
+                    ->searchable()
                     ->badge()
                     ->separator(',')
                     ->sortable(),
-                
+
                 TextColumn::make('hotline')
+                    ->searchable()
                     ->label('Hotline')
                     ->sortable(),
                 TextColumn::make('branch.name')
@@ -166,6 +176,7 @@ class AccountResource extends Resource
                     ->sortable(),
                 TextColumn::make('aheeva.ip')
                 ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable()
                     ->label('Aheeva')
                     ->sortable(),
             ])

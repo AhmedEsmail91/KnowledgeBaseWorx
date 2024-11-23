@@ -28,7 +28,7 @@ class UserResource extends Resource
         return $form
         ->schema([
             TextInput::make('name')
-                // ->unique()
+                
                 ->label('Name')
                 ->required()
                 ->placeholder('John Doe'),

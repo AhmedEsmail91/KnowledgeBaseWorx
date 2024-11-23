@@ -15,8 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        
-        
         $this->call([
             SectionSeeder::class,
             PositionSeeder::class,
@@ -29,7 +27,8 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'position_id' => 10,
         ]);
+
     \App\Models\Item::factory(10)->create();
-        
+
     }
 }
