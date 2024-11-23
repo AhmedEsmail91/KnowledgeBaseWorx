@@ -1,0 +1,3 @@
+Incase of updating or making creation in the account with the assigned lines from CN_lines.
+must change the data in the cn_lines Table with the assigned account_id, and selecting the type;
+which will update it in the cn_lines all from the account model.
