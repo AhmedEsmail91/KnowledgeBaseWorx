@@ -9,8 +9,10 @@ use Mockery\Undefined;
 class Account extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'job_nature','thumbnail','hotline', 'branch_id', 'services', 'kaspersky_id', 'aheeva_id'];
+    protected $fillable = ['name', 'job_nature','thumbnail','hotline', 'branch_id', 'services', 'kaspersky_id', 'aheeva_id','CN_id','Inbound-Lines','Outbound-Lines'];
     protected $casts = [
+        'Inbound-Lines'=>'array',
+        'Outbound-Lines'=>'array',
         'services' => 'array',
         'job_nature' => 'array',
     ];
@@ -32,30 +34,8 @@ class Account extends Model
     {
         return $this->belongsTo(Aheeva::class);
     }
-    public function cnLines()
+    public function CN()
     {
-        return $this->belongsToMany(cn_lines::class, 'acc__lines', 'account_id', 'line_id');
+        return $this->belongsToMany(CN::class, 'acc_cns', 'account_id', 'c_n_id');
     }
-    // public function setDefaultType()
-    // {
-    //     if (empty($this->type)) {
-    //         $this->type = 'inbound'; // or 'outbound' based on your requirement
-    //     }
-    // }
-
-//    protected static function booted()
-//    {
-//        static::creating(function ($account) {
-//            // Access form data from the request
-//            $formData = request()->all();
-//
-//            dd(json_decode($formData['components'][0]['snapshot']));
-//        });
-//    }
-    // protected static function booted()
-    // {
-    //     static::created(function ($account) {
-
-    //     });
-    // }
 }

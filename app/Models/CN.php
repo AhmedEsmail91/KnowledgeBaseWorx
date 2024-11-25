@@ -14,6 +14,10 @@ class CN extends Model
     protected $casts = [
         'Hunt_Group' => 'array',
     ];
+    public function account()
+    {
+        return $this->hasMany(Account::class, 'c_n_id', 'account_id');
+    }
     /*protected static function booted()
     {
         static::created(function ($cn) {

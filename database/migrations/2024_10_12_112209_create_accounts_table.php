@@ -20,7 +20,8 @@ return new class extends Migration
             $table->foreignId('aheeva_id')->nullable()->constrained('aheevas')->cascadeOnDelete();
             $table->foreignId('kaspersky_id')->nullable()->constrained('kasperskies')->cascadeOnDelete();
             $table->foreignId('branch_id')->constrained(table: 'branches')->cascadeOnDelete();
-            
+            $table->json('Inbound-Lines')->nullable();
+            $table->json('Outbound-Lines')->nullable();
             $table->timestamps();
         });
     }

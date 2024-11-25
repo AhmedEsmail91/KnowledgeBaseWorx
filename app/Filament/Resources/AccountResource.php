@@ -71,7 +71,7 @@ class AccountResource extends Resource
                             ,
 
                         FileUpload::make('thumbnail')
-                            ->disk('public')->directory('accounts/thumbnails')
+                            ->disk('local')->directory('/accounts/thumbnails')
                             ->label('Logo')
 
                             //->required()
@@ -82,14 +82,9 @@ class AccountResource extends Resource
 
                 Section::make('Provides')
                 ->schema([
-                    Select::make('aheeva_id')
-                        ->label('Aheeva')
 
-                        ->relationship('aheeva','ip')
-                        ,
                     Select::make('kaspersky_id')
                         ->label('Kaspersky')
-
                         ->relationship(
                             name: 'kaspersky',
                             modifyQueryUsing: fn (Builder $query) => $query->orderBy('ip'),)
@@ -107,7 +102,7 @@ class AccountResource extends Resource
                         ->getOptionLabelFromRecordUsing(function(Branch $record){
                             return Str::limit("{$record->name} Location:: {$record->location}",50,'...');
                         })
-                        //->required()
+//                        ->required()
                         ,
                     Select::make('services')
                         ->label('Services')
@@ -125,6 +120,38 @@ class AccountResource extends Resource
                         //->required()
                         ,
                         ])->columnSpan(2)->collapsible(),
+                Section::make('Connectivity')
+                    ->collapsed()
+                    ->schema([
+                        Select::make("CN.CN-number")
+                            ->columnSpan(2)
+                            ->multiple()
+                            ->preload()
+                            ->label('Circuit Number')
+                            ->relationship('CN','CN-number'),
+//,
+                        Section::make('Lines')
+                            ->schema([
+                                TagsInput::make('Inbound-Lines')
+                                    ->label('Inbound')
+                                    ->columnSpan(1)
+                                    ->placeholder('LineNumber')
+                                    ->required(),
+
+                                TagsInput::make('Outbound-Lines')
+                                    ->label('Outbound')
+                                    ->columnSpan(2)
+
+                                    ->placeholder('LineNumber')
+                                    ->required(),
+                                Select::make('aheeva_id')
+                                    ->label('Aheeva')
+                                    ->columnSpan(3)
+
+                                    ->relationship('aheeva','ip'),
+                            ])
+                            ->columnSpan(3)
+                    ])->columns(5),
             ])->columns(4);
     }
 
@@ -149,6 +176,7 @@ class AccountResource extends Resource
                     ->sortable(),
                 TextColumn::make('job_nature')
                     ->label('Job Nature')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->limit(5)
                     ->color('info')
                     ->searchable()
@@ -167,7 +195,7 @@ class AccountResource extends Resource
                 TextColumn::make('services.name')
                     ->label('Services')
                     ->badge()
-                    ->limit(10)
+                    ->limitList(2)
                     ->separator(',')
                     ->sortable(),
                 TextColumn::make('kaspersky.Ip')
@@ -179,6 +207,24 @@ class AccountResource extends Resource
                     ->searchable()
                     ->label('Aheeva')
                     ->sortable(),
+                TextColumn::make('Inbound-Lines')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                        ->searchable()
+                        ->label('Inbound')
+                        ->badge()
+                        ->limitList(2)
+                        ->color('info')
+                        ->separator(',')
+                        ->sortable(),
+                TextColumn::make('Outbound-Lines')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                        ->badge()
+                        ->limitList(2)
+                        ->separator(',')
+                        ->searchable()
+                        ->color('info')
+                        ->label('Outbound')
+                        ->sortable(),
             ])
             ->filters([
                 //
