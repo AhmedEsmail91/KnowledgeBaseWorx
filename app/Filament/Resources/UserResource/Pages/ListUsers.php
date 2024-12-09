@@ -16,5 +16,15 @@ class ListUsers extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-    
+    protected function getHeaderWidgets(): array
+    {
+        return [
+
+        ];
+    }protected function getFooterWidgets(): array
+    {
+        return [
+
+        ];
+    }
 }
