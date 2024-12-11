@@ -1,36 +1,46 @@
 {
-    "name": "Laravel Development Environment",
-    "image": "mcr.microsoft.com/devcontainers/php:8.2-bullseye",
-    "features": {
-      "ghcr.io/devcontainers/features/node:1": {},
-      "ghcr.io/devcontainers/features/mysql:1": {
-        "version": "8.0"
-      }
+    "build": {
+        "dockerfile": "Dockerfile"
     },
-    "customizations": {
-      "vscode": {
-        "settings": {
-          "php.validate.executablePath": "/usr/local/bin/php"
+    "extensions": [
+		"bmewburn.vscode-intelephense-client",
+		"coenraads.bracket-pair-colorizer",
+		"neilbrayfield.php-docblocker",
+		"editorconfig.editorconfig",
+		"esbenp.prettier-vscode",
+		"dbaeumer.vscode-eslint",
+		"ms-vsliveshare.vsliveshare"
+	],
+    "settings": {
+        "explorer.compactFolders": false,
+        "files.associations": {
+            "*.inc": "php",
+            "*.install": "php",
+            "*.module": "php",
+            "*.theme": "php",
+            "*.html": "twig"
         },
-        "extensions": [
-          "bmewburn.vscode-intelephense-client",
-          "junstyle.php-cs-fixer",
-          "ryannaddy.laravel-artisan",
-          "austenc.laravel-blade-spacer"
-        ]
-      }
-    },
-    "postCreateCommand": "composer install && npm install && php artisan key:generate && php artisan migrate",
-    "forwardPorts": [8000, 3306],
-    "portsAttributes": {
-      "8000": {
-        "label": "Laravel App",
-        "onAutoForward": "notify"
-      },
-      "3306": {
-        "label": "MySQL Server",
-        "onAutoForward": "ignore"
-      }
+        "emmet.includeLanguages": {
+            "twig": "html"
+        },
+        "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": true,
+        "intelephense.format.braces": "k&r",
+        "intelephense.files.exclude": [
+            "**/.git/**",
+            "**/.svn/**",
+            "**/.hg/**",
+            "**/CVS/**",
+            "**/.DS_Store/**",
+            "**/node_modules/**",
+            "**/bower_components/**",
+            "**/vendor/**/{Tests,tests}/**",
+            "**/.history/**",
+            "**/vendor/**/vendor/**",
+            "**/*.api.php"
+        ],
+        "php.suggest.basic": false,
+        "php.validate.enable": false,
+        "php-docblocker.returnGap": true,
+        "php-docblocker.useShortNames": true
     }
-  }
-  
+}
