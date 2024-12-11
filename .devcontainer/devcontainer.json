@@ -1,0 +1,29 @@
+{
+    "name": "Laravel Development Environment",
+    "image": "mcr.microsoft.com/devcontainers/php:8.2-bullseye",
+    "features": {
+      "ghcr.io/devcontainers/features/node:1": {}
+    },
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "php.validate.executablePath": "/usr/local/bin/php"
+        },
+        "extensions": [
+          "bmewburn.vscode-intelephense-client",
+          "junstyle.php-cs-fixer",
+          "ryannaddy.laravel-artisan",
+          "austenc.laravel-blade-spacer"
+        ]
+      }
+    },
+    "postCreateCommand": "composer install && npm install && php artisan key:generate",
+    "forwardPorts": [8000],
+    "portsAttributes": {
+      "8000": {
+        "label": "Laravel App",
+        "onAutoForward": "notify"
+      }
+    }
+  }
+  
